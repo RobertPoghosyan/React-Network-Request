@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 import Header from "components/Header/Header";
 import Layout from "components/Layout/Layout";
-import Container from "containers/Container/Container";
+import Posts from "containers/Posts/Posts";
+
 
 export class App extends Component {
   render() {
@@ -10,7 +11,7 @@ export class App extends Component {
       <div>
         <Header />
         <Layout>
-          <Container />
+          <Posts />
         </Layout>
       </div>
     );
