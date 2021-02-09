@@ -4,4 +4,13 @@
   &__post {
     margin: 12px 0;
   }
+  &__btn-create{
+    background-color: lightgreen;
+  }
+  &__btn-update{
+    background-color: yellow;
+  }
+  &__btn-delete{
+    background-color:red;
+  }
 }
