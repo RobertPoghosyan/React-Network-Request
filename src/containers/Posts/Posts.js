@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import Post from "components/Post/Post";
 import service from "api/service";
 
+//import { getAllposts2 } from "api/requestData";
+
 import load from "assets/load.gif";
 
 import './Posts.scss';
@@ -32,6 +34,19 @@ export class Posts extends Component {
         console.log(err);
       })
   }
+  //  We initially get posts data but it is empty array
+  // componentDidMount(){
+  //   getAllposts2()
+  //   .then(resJson => {
+  //     this.setState({
+  //       posts:resJson,
+          
+  //     })
+  //   })
+  //   .catch(err =>{
+  //     console.log(err);
+  //   })
+  // }
 
   updatePost = ()=>{
     service.updatePost(5,{title:'Updated Title'})
