@@ -3,21 +3,29 @@ import React, { Component } from "react";
 import Post from "components/Post/Post";
 import service from "api/service";
 
+import load from "assets/load.gif";
+
 import './Posts.scss';
+
+const limit = 9;
 
 export class Posts extends Component {
 
   
   state = {
-    posts:[]
+    posts:null,
+    start:0,
+    hasMore:true,
+    loading:false,
   }
 
   componentDidMount() {
     
-    service.getPosts(0,5)
+    service.getPosts(this.state.start,limit)
         .then(resJson => {
             this.setState({
-                posts:resJson
+              posts:resJson,
+                
             })
         })
       .catch(err =>{
@@ -59,38 +67,73 @@ export class Posts extends Component {
 
   }
 
-  deletePost = ()=>{
-    service.deletePost(5)
-    .then(resJson => {
-      const afterDelPosts = this.state.posts.filter(el => el.id !== resJson )
-      
+  deletePost = (id)=>{
+    service.deletePost(id)
+    .then(() => {
+      const afterDelPosts = this.state.posts.filter(el => {
+        return el.id !== id;
+      })
       this.setState ({
         posts:afterDelPosts
       })
         
     })
+    .catch(err =>{
+      console.log(err);
+    })
 
   }
 
+  getMore =()=>{
+    const newStart = this.state.start + limit;
+    this.setState({
+      start:newStart,
+      loading:true
+    })
+    service.getPosts(newStart)
+      .then(resJson => {
+        this.setState({
+          posts:[...this.state.posts,...resJson],
+          hasMore: resJson.length <limit ? false : true,
+          loading:false,
+        })
+      })
+  }
+
+
 
   render() {
+    const {hasMore,loading,posts} = this.state;
     return (
       <div className = "app-posts">
-        {
-          this.state.posts.map(post =>{
-            return <Post 
-             key = {post.id}
-             post = {post}
-             className = "app-posts__post"
-            />
-          })
-        }
-        <button onClick={this.createPost} className = "app-posts__btn-create"> Create Post </button>
-        <button onClick={this.updatePost} className = "app-posts__btn-update"> Update Post </button>
-        <button onClick={this.deletePost} className = "app-posts__btn-delete"> Delete Post </button>
+        {posts ?(
+          <>
+            <div className = "app-posts__container">
+              {
+                  posts.map(post =>{
+                  return <Post 
+                  key = {post.id}
+                  post = {post}
+                  className = "app-posts__container__post"
+                  />
+                })
+              }
+            
+            </div>
+            {hasMore && <div>{loading ? <img src ={load}></img>: <button onClick = {this.getMore} className = "app-posts__btn-getMore">GET MORE</button>}</div>}
+          </>
+        ) :(
+          <div><img src ={load}></img></div>
+        )}
+        <button onClick={this.createPost} className = "app-posts__btn__create"> Create Post </button>
+        <button onClick={this.updatePost} className = "app-posts__btn__update"> Update Post </button>
+        <button onClick={()=>this.deletePost(5)} className = "app-posts__btn__delete"> Delete Post </button>
       </div>
     )
   }
 }
 
 export default Posts;
+
+
+// {hasMore && <button onClick = {this.getMore} className = "app-posts__btn-getMore" disabled ={loading}>{loading ? "Loading" : "GET MORE"}</button>}

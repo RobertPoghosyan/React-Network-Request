@@ -21,9 +21,19 @@
         })    
     }
 
-    getPosts = (start,limit) =>{
-        return this._request('GET',`/posts?_start=${start}&_limit=${limit}`)
+    // Delay manually
+    getPosts = (start,limit=9) =>{
+        return new Promise ((resolve,reject)=>{
+            setTimeout(()=>{
+                return resolve (this._request('GET',`/posts?_start=${start}&_limit=${limit}`))
+            },3000)
+        }) 
     }
+
+    // Delay
+    // getPosts = (start,limit=9) =>{
+    //     return this._request('GET',`/posts?_start=${start}&_limit=${limit}&_delay=5000`)
+    // }
 
     getAllPosts = () =>{
         return this._request('GET','/posts')
