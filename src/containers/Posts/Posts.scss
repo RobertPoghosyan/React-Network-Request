@@ -1,16 +1,38 @@
 @import "~styles/root";
 
 .app-posts {
-  &__post {
-    margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 24px 0;
+  &__container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+
+    &__post {
+      margin: 12px;
+    }
   }
-  &__btn-create{
+
+  &__btn__create {
     background-color: lightgreen;
+    margin: 10px;
+    padding: 10px;
   }
-  &__btn-update{
+  &__btn__update {
     background-color: yellow;
+    margin: 10px;
+    padding: 10px;
   }
-  &__btn-delete{
-    background-color:red;
+  &__btn__delete {
+    background-color: red;
+    margin: 10px;
+    padding: 10px;
+  }
+  &__btn-getMore {
+    margin: 10px;
+    background-color: rgb(142, 221, 231);
   }
 }
