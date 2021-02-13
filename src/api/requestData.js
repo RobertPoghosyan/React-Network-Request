@@ -21,4 +21,8 @@ const getAllposts = () =>{
     return requestData('GET','https://jsonplaceholder.typicode.com/posts')
 }
 
-export {getAllposts};
+const getAllposts2 = () =>{
+return requestData('GET','api/data-mockup.js')
+}
+
+export {getAllposts,getAllposts2};

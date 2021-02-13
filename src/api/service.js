@@ -1,4 +1,4 @@
- class Service {
+class Service {
     constructor() {
         this.baseUrl = "https://jsonplaceholder.typicode.com";
     }
