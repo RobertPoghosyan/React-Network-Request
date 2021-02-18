@@ -1,38 +1,24 @@
 import React, { Component } from "react";
+import {BrowserRouter} from "react-router-dom";
 
+import AppRoutes from "routes/AppRoutes";
 import Header from "components/Header/Header";
 import Layout from "components/Layout/Layout";
-import Posts from "containers/Posts/Posts";
 
 
 export class App extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <Layout>
-          <Posts />
-        </Layout>
+        <BrowserRouter>
+          <Header />
+          <Layout>
+            <AppRoutes/>
+          </Layout>
+        </BrowserRouter>
       </div>
     );
   }
 }
 
 export default App;
-
-// Function component
-/*
-  function App() {
-    return (
-      <div className="App">
-        <Header/>
-        <Layout>
-          <Container/>
-        </Layout>
-        <Footer/>
-      </div>
-    );
-  }
-
-  export default App;
-*/
