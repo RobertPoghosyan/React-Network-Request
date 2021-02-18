@@ -3,9 +3,8 @@ import React, { Component } from "react";
 import Post from "components/Post/Post";
 import service from "api/service";
 
-//import { getAllposts2 } from "api/requestData";
-
 import load from "assets/load.gif";
+import noResults from "assets/noResults.jpg";
 
 import './Posts.scss';
 
@@ -34,19 +33,7 @@ export class Posts extends Component {
         console.log(err);
       })
   }
-  //  We initially get posts data but it is empty array
-  // componentDidMount(){
-  //   getAllposts2()
-  //   .then(resJson => {
-  //     this.setState({
-  //       posts:resJson,
-          
-  //     })
-  //   })
-  //   .catch(err =>{
-  //     console.log(err);
-  //   })
-  // }
+  
 
   updatePost = ()=>{
     service.updatePost(5,{title:'Updated Title'})
@@ -119,27 +106,32 @@ export class Posts extends Component {
 
   render() {
     const {hasMore,loading,posts} = this.state;
+
+    if(!posts){
+      return <div><img src ={load}></img></div>
+    }
+
+    if(!(posts.length > 0)){
+      return <div><img src = {noResults}></img>No results</div>
+    }
+    
     return (
       <div className = "app-posts">
-        {posts ?(
-          <>
-            <div className = "app-posts__container">
-              {
-                  posts.map(post =>{
-                  return <Post 
-                  key = {post.id}
-                  post = {post}
-                  className = "app-posts__container__post"
-                  />
-                })
-              }
-            
-            </div>
-            {hasMore && <div>{loading ? <img src ={load}></img>: <button onClick = {this.getMore} className = "app-posts__btn-getMore">GET MORE</button>}</div>}
-          </>
-        ) :(
-          <div><img src ={load}></img></div>
-        )}
+        <div className = "app-posts__container">
+          {
+            posts.map(post =>{
+              return <Post 
+                        key = {post.id}
+                        post = {post}
+                        className = "app-posts__container__post"
+                        isLink = {true}
+                      />
+            })
+          }
+        
+        </div>
+        {hasMore && <div>{loading ? <img src ={load}></img>: <button onClick = {this.getMore} className = "app-posts__btn-getMore">GET MORE</button>}</div>}
+
         <button onClick={this.createPost} className = "app-posts__btn__create"> Create Post </button>
         <button onClick={this.updatePost} className = "app-posts__btn__update"> Update Post </button>
         <button onClick={()=>this.deletePost(5)} className = "app-posts__btn__delete"> Delete Post </button>
