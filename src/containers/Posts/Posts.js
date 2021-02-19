@@ -22,7 +22,7 @@ export class Posts extends Component {
 
   componentDidMount() {
     
-    service.getPosts(this.state.start,limit)
+    service.getAllPosts()
         .then(resJson => {
             this.setState({
               posts:resJson,
