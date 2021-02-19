@@ -1,0 +1,22 @@
+@import "~styles/root";
+
+.app-postDetails{
+    
+
+    &__modal{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color:#80E186;
+        width: 500px;
+        height:400px;
+    }
+     
+    &__input{
+        display:block;
+        width: 480px;
+        height: 100px;
+        background-color:lightgray
+    }
+
+}
