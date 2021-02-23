@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 //import postsMockup from 'api/data-mockup';
 //import "./Homepage.scss"
 
 export class Homepage extends Component {
 
-    
     render() {
         return (
             <div>

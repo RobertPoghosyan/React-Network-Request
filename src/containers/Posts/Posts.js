@@ -2,13 +2,14 @@ import React, { Component } from "react";
 
 import Post from "components/Post/Post";
 import service from "api/service";
+import fbService from "api/fbService";
 
 import load from "assets/load.gif";
 import noResults from "assets/noResults.jpg";
 
 import './Posts.scss';
 
-const limit = 9;
+const limit = 8;
 
 export class Posts extends Component {
 
@@ -22,16 +23,24 @@ export class Posts extends Component {
 
   componentDidMount() {
     
-    service.getAllPosts()
-        .then(resJson => {
-            this.setState({
-              posts:resJson,
+    // service.getAllPosts()
+    //     .then(resJson => {
+    //         this.setState({
+    //           posts:resJson,
                 
-            })
-        })
-      .catch(err =>{
-        console.log(err);
+    //         })
+    //     })
+    //   .catch(err =>{
+    //     console.log(err);
+    //   })
+
+    fbService.getPosts()
+    .then(data => {
+      this.setState({
+       posts:data,
+                  
       })
+    })
   }
   
 
@@ -54,7 +63,7 @@ export class Posts extends Component {
   }
 
   createPost = ()=>{
-    service.createPost({
+    fbService.createPost({
       title:'Created new Title',
       body:'Created new Body',
       userId:1
@@ -86,13 +95,31 @@ export class Posts extends Component {
 
   }
 
+  removePost = (id)=>{
+    fbService.removePost(id)
+    .then(() => {
+      const afterDelPosts = this.state.posts.filter(el => {
+        return el.id !== id;
+      })
+      this.setState ({
+        posts:afterDelPosts
+      })
+        
+    })
+    .catch(err =>{
+      console.log(err);
+    })
+
+  }
+  
+
   getMore =()=>{
-    const newStart = this.state.start + limit;
+    const newStart = this.state.start + limit + 1;
     this.setState({
       start:newStart,
       loading:true
     })
-    service.getPosts(newStart)
+    fbService.getPosts(newStart,newStart + limit)
       .then(resJson => {
         this.setState({
           posts:[...this.state.posts,...resJson],
@@ -102,7 +129,7 @@ export class Posts extends Component {
       })
   }
 
-
+  
 
   render() {
     const {hasMore,loading,posts} = this.state;
@@ -125,6 +152,7 @@ export class Posts extends Component {
                         post = {post}
                         className = "app-posts__container__post"
                         isLink = {true}
+                        remove = {()=>this.removePost(post.id)}
                       />
             })
           }
@@ -133,8 +161,8 @@ export class Posts extends Component {
         {hasMore && <div>{loading ? <img src ={load}></img>: <button onClick = {this.getMore} className = "app-posts__btn-getMore">GET MORE</button>}</div>}
 
         <button onClick={this.createPost} className = "app-posts__btn__create"> Create Post </button>
-        <button onClick={this.updatePost} className = "app-posts__btn__update"> Update Post </button>
-        <button onClick={()=>this.deletePost(5)} className = "app-posts__btn__delete"> Delete Post </button>
+        {/* <button onClick={this.updatePost} className = "app-posts__btn__update"> Update Post </button>
+        <button onClick={()=>this.deletePost(5)} className = "app-posts__btn__delete"> Delete Post </button> */}
       </div>
     )
   }

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 
 import Post from 'components/Post/Post';
-import service from 'api/service';
+//import service from 'api/service';
 import Modal from '@material-ui/core/Modal';
 
 import "./PostDetails.scss";
 
 import load from "assets/load.gif";
 import { Button } from '@material-ui/core';
+import fbService from 'api/fbService';
 
 export class PostDetails extends Component {
 
@@ -19,12 +20,12 @@ export class PostDetails extends Component {
     }
 
     componentDidMount (){
-        service.getPost(this.props.match.params.postId)
+        fbService.getPost(this.props.match.params.postId)
         .then(resJson => {
             this.setState({
               post: resJson,
               titleValue: resJson.title,
-                
+              bodyValue:resJson.body , 
             })
         })
       .catch(err =>{
@@ -40,12 +41,13 @@ export class PostDetails extends Component {
     }
 
     savePost = ()=>{
-        service.updatePost(this.state.post.id, {
+        fbService.updatePost({
             ...this.state.post,
-            title:this.state.titleValue
+            title:this.state.titleValue,
+            body:this.state.bodyValue
         }).then(res=>{
             this.setState({
-                post: {...this.state.post, title:this.state.titleValue},
+                post: {...this.state.post, title:this.state.titleValue, body:this.state.bodyValue},
                 isEditModalOpen: false
             })
         })
@@ -61,8 +63,14 @@ export class PostDetails extends Component {
         })
     }
 
+    changeBody = (e)=>{
+        this.setState({
+            bodyValue:e.target.value
+        })
+    }
+
     render() {
-        const {post,isEditModalOpen,titleValue} = this.state;
+        const {post,isEditModalOpen,titleValue,bodyValue} = this.state;
         if(!post){
             return <div><img src ={load}></img></div>
         }
@@ -75,6 +83,7 @@ export class PostDetails extends Component {
                 <Modal open={isEditModalOpen} onClose={this.toggleCloseModal} className = "app-postDetails__modal">
                     <div className = "app-postDetails__modal__edit">
                         <input value = {titleValue} onChange = {this.changeTitle} className = "app-postDetails__input"/>
+                        <input value = {bodyValue} onChange = {this.changeBody} className = "app-postDetails__input"/>
                         <Button variant="contained" color="primary" onClick = {this.savePost}>SAVE</Button>
                     </div>
                 </Modal>

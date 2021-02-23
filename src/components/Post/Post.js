@@ -7,12 +7,20 @@ import Button from "@material-ui/core/Button";
 
 import './Post.scss';
 
-const Post = ({post, className = '',isLink = false, edit = ()=>{} }) => {
+const Post = ({post, className = '',isLink = false, edit = ()=>{} ,remove =()=>{} }) => {
+
+    const removeHandler = (e) => {
+        e.preventDefault();
+        remove();
+    }
 
     const Wrapper = ({children}) =>{
         const postClassName = `app-post ${className}`;
         return isLink ? (
             <Link className = {postClassName} to = {`/posts/${post.id}`}>
+                <Button variant="contained" color="primary" onClick = {removeHandler}>
+                    <span className = "app-post__edit">Remove</span>
+                </Button>
                 {children}
             </Link>
         ) : (
@@ -43,7 +51,8 @@ Post.propTypes ={
         id:PropTypes.number.isRequired,
         userId:PropTypes.number.isRequired,
         isLink:PropTypes.bool,
-        edit:PropTypes.func
+        edit:PropTypes.func,
+        remove:PropTypes.func
     }),
     className:PropTypes.string,
 }

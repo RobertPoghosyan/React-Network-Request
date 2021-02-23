@@ -13,7 +13,7 @@ class Header extends React.Component {
 
   componentDidUpdate(prevProps){
     if(prevProps.location.pathname !== this.props.location.pathname){
-        if(prevProps.location.pathname === "/"){
+        if(this.props.location.pathname === "/"){
           document.body.classList.add('changed-body-style');
         }else{
           document.body.classList.remove('changed-body-style');
