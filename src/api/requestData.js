@@ -21,5 +21,4 @@ const getAllposts = () =>{
     return requestData('GET','https://jsonplaceholder.typicode.com/posts')
 }
 
-
 export {getAllposts};

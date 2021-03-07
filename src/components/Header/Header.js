@@ -1,8 +1,28 @@
 import React from "react";
-import {withRouter} from "react-router-dom"
+import {withRouter} from "react-router-dom";
+
 import NavLink from "components/NavLink/NavLink";
 
 import "./Header.scss";
+
+const headerNavLinks = [
+  {
+    title:"Homepage",
+    to:"/"
+  },
+  {
+    title:"Posts",
+    to:"/posts"
+  },
+  {
+    title:"Todos",
+    to:"/todos"
+  },
+  {
+    title:"Authentication",
+    to:"/auth"
+  }
+]
 
 class Header extends React.Component {
 
@@ -26,9 +46,13 @@ class Header extends React.Component {
       <div className="app-header">
         <nav>
           <ul className = "app-header__ul">
-            <li><NavLink to = "/">Homepage</NavLink></li>
-            <li><NavLink to = "/posts">Posts</NavLink></li>
-            <li><NavLink to = "/todos">Todos</NavLink></li>
+            {
+              headerNavLinks.map(el => {
+                return(
+                  <li key = {el.title}><NavLink to = {el.to}>{el.title}</NavLink></li>
+                )
+              })
+            }
           </ul>
         </nav>
       </div>

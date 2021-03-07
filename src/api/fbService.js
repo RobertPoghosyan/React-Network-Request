@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/database";
+import "firebase/auth";
 
 import firebaseConfig from "./firebaseConfig";
 
@@ -78,6 +79,20 @@ class FbService {
                 id:idx
             }
         }))
+    }
+
+    signIn = async (credentials)=>{
+      const res =  firebase.auth().signInWithEmailAndPassword(credentials.email,credentials.password)
+      const{uid,displayName,photURL,email} = res.user;
+
+      return {uid,displayName,photURL,email};
+    }
+
+    signUp = async (credentials)=>{
+     const res =  await  firebase.auth().createUserWithEmailAndPassword(credentials.email,credentials.password)
+     const{uid,displayName,photURL,email} = res.user;
+
+      return {uid,displayName,photURL,email};
     }
 }
 

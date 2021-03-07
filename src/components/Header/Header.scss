@@ -7,12 +7,13 @@
   width: 100%;
   height: $header-size;
   background-color: #ddd;
-  box-shadow: 1px 1px 5px #eee;
+  //box-shadow: 1px 1px 5px #eee;
+  box-shadow: 0px 4px 8px rgba(51, 51, 50, 0.342);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-
+  font-family: "Roboto";
   &__ul {
     display: flex;
     li {
@@ -20,4 +21,3 @@
     }
   }
 }
-

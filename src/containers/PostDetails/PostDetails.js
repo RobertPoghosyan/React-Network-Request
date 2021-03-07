@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
+import Modal from '@material-ui/core/Modal';
+import { Button } from '@material-ui/core';
 
 import Post from 'components/Post/Post';
+import fbService from 'api/fbService';
 //import service from 'api/service';
-import Modal from '@material-ui/core/Modal';
 
 import "./PostDetails.scss";
 
 import load from "assets/load.gif";
-import { Button } from '@material-ui/core';
-import fbService from 'api/fbService';
 
 export class PostDetails extends Component {
 

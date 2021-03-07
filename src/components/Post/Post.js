@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-
-import Link from "components/Link/Link";
 import EditIcon from '@material-ui/icons/Edit';
 import Button from "@material-ui/core/Button";
+
+import Link from "components/Link/Link";
 
 import './Post.scss';
 
@@ -28,7 +28,6 @@ const Post = ({post, className = '',isLink = false, edit = ()=>{} ,remove =()=>{
                     <Button variant="contained" color="primary" onClick = {edit}>
                         <EditIcon/> 
                         <span className = "app-post__edit">Edit</span>
-
                     </Button>
                     {children} 
                 </div>
@@ -36,10 +35,8 @@ const Post = ({post, className = '',isLink = false, edit = ()=>{} ,remove =()=>{
     }
     return (
         <Wrapper>
-            
             <span className = "app-post__title">{post.title}</span>  
             <span className = "app-post__body">{post.body}</span>  
-            
         </Wrapper>
     )
 }
