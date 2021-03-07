@@ -1,0 +1,53 @@
+.app-signIn{
+    display:inline-block;
+    align-items: center;
+    justify-content: center;
+
+    &__rhombus{
+        align-items: center;
+        position: absolute;
+        width: 640px;
+        height: 640px;
+        box-shadow: 1.5rem 1.5rem 1.5rem #ddd;
+        transform: rotate(45deg);
+    }
+    
+    &__form{
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+        position: fixed;
+    }
+
+    h1{
+        font-size: 32px;
+        font-family: "Roboto";
+        font-weight: bold;
+        color:#456db8;
+        letter-spacing: 4px;
+        margin-bottom: 64px;
+        text-align: center;
+    }
+
+    &__input{
+        width: 600px;
+        height: 50px;
+        background-color: #fff;
+        font-size: 16px;
+        padding: 0 2rem;
+        letter-spacing: 0.2rem;
+        border: none;
+        border-radius: 5rem;
+        box-shadow: 0px 4px 8px rgba(51, 51, 50, 0.342) ;
+        color: #888;
+        margin: 24px;
+        padding: 24px;
+        box-sizing: border-box;
+        outline: none;
+        font-family: "Roboto";
+    
+    }
+
+}
+
+
