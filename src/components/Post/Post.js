@@ -1,13 +1,16 @@
-import React from 'react'
+import React , {useContext} from 'react'
 import PropTypes from 'prop-types';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from "@material-ui/core/Button";
 
+import { AppContext } from 'context/AppContext';
 import Link from "components/Link/Link";
 
 import './Post.scss';
 
 const Post = ({post, className = '',isLink = false, edit = ()=>{} ,remove =()=>{} }) => {
+
+    const context = useContext(AppContext);
 
     const removeHandler = (e) => {
         e.preventDefault();
@@ -18,9 +21,13 @@ const Post = ({post, className = '',isLink = false, edit = ()=>{} ,remove =()=>{
         const postClassName = `app-post ${className}`;
         return isLink ? (
             <Link className = {postClassName} to = {`/posts/${post.id}`}>
-                <Button variant="contained" color="primary" onClick = {removeHandler}>
-                    <span className = "app-post__edit">Remove</span>
-                </Button>
+                {
+                    context.user ? (
+                        <Button variant="contained" color="primary" onClick = {removeHandler}>
+                            <span className = "app-post__edit">Remove</span>
+                        </Button>
+                    ) : null
+                }
                 {children}
             </Link>
         ) : (

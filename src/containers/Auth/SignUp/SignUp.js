@@ -1,6 +1,7 @@
-import React,{useState} from 'react';
+import React,{useState , useContext} from 'react';
 //import { toast } from 'react-toastify';
 
+import { AppContext } from 'context/AppContext';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
 import fbService from 'api/fbService';
@@ -12,6 +13,8 @@ import "./SignUp.scss";
 const SignUp = () => {
     // const[email,setEmail]  = useState("");
     // const[password,setPassword]  = useState("");
+
+    const context = useContext(AppContext)
 
     const [loading,setLoading] = useState(false);
 
@@ -42,6 +45,7 @@ const SignUp = () => {
         try{
             setLoading(true);
             const user =  await fbService.signUp(credentials);
+            context.setUser(user);
         }catch(err){
             setErrorstate(
                 err.code.includes("email") ? { emailError:errorMap(err.message)}: 
