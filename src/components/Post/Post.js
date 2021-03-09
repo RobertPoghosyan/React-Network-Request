@@ -22,7 +22,7 @@ const Post = ({post, className = '',isLink = false, edit = ()=>{} ,remove =()=>{
         return isLink ? (
             <Link className = {postClassName} to = {`/posts/${post.id}`}>
                 {
-                    context.user ? (
+                    context.state.user ? (
                         <Button variant="contained" color="primary" onClick = {removeHandler}>
                             <span className = "app-post__edit">Remove</span>
                         </Button>

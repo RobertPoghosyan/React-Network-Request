@@ -38,7 +38,7 @@ const Header = ()=>{
               })
             }
             {
-              !context.user ? (
+              !context.state.user ? (
                 <li key = 'auth'><NavLink to = '/auth'>Authentication</NavLink></li>
               ) : (
                 <li key = 'profile'><NavLink to = '/profile'>Profile</NavLink></li>
@@ -99,4 +99,14 @@ export default withRouter (Header);
   title:"Authentication",
   to:"/auth"
 }
+*/
+
+/* useContext when used classes
+
+<AppContext.Consumer>
+ {context =>(
+   <div>{context.state.user}</div>
+ )}
+</AppContext.Consumer>
+
 */

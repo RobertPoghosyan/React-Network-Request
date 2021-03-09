@@ -6,7 +6,8 @@ import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
 import fbService from 'api/fbService';
 import ErrorMessage from 'components/Errors/ErrorMessage/ErrorMessage';
-import errorMap from 'utils/errorMap';
+import {validateMail,validatePassword } from 'utils/inputValidation';
+//import errorMap from 'utils/errorMap';
 
 import "./SignUp.scss";
 
@@ -45,12 +46,14 @@ const SignUp = () => {
         try{
             setLoading(true);
             const user =  await fbService.signUp(credentials);
-            context.setUser(user);
+            context.dispatch({type:'SET_USER',payload:{user}});
         }catch(err){
             setErrorstate(
-                err.code.includes("email") ? { emailError:errorMap(err.message)}: 
-                err.code.includes("password") ? { passwordError:err.message}:
-                "" 
+                (validateMail(credentials.email) === false ) ? {emailError:"The email address is not valid" }: 
+                (validatePassword(credentials.password) === false ) ? {passwordError:"Password is not valid" }:""
+                //err.code.includes("email") ? { emailError:errorMap(err.message)}: 
+                //err.code.includes("password") ? { passwordError:err.message}:
+                //"" 
             )
             // toast.error(`SignUp failed : ${err.message}`)
         }finally{
@@ -71,7 +74,8 @@ const SignUp = () => {
                     className = "app-signUp__input"
                     loading = {loading}
                 />
-               <ErrorMessage text = {errorState.emailError} /> 
+                
+                <ErrorMessage text = {errorState.emailError} /> 
                 <Input
                     value = {credentials.password}
                     onChange ={(e)=>changeHandler("password",e.target.value)}

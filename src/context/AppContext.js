@@ -1,8 +1,8 @@
 import {createContext} from "react";
 
-const initialState = {
+export const initialState = {
     user: null,
-    setUser: () => { }
+   
 }
 
 export const AppContext = createContext(initialState);
