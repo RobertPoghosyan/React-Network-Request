@@ -1,5 +1,7 @@
-import React,{useState} from 'react';
+import React,{useState, useContext} from 'react';
+import { useHistory } from 'react-router-dom';
 
+import { AppContext } from 'context/AppContext';
 import Input from 'components/Input/Input';
 import Button from 'components/Button/Button';
 import fbService from 'api/fbService';
@@ -9,6 +11,9 @@ import "./SignIn.scss";
 const SignIn = () => {
     //const[email,setEmail]  = useState("");
     //const[password,setPassword]  = useState("");
+
+    const context =useContext(AppContext);
+    const history = useHistory();
 
     const [credentials,setCredentials] = useState({
         email:"",
@@ -24,7 +29,9 @@ const SignIn = () => {
 
     const handleSignin = async ()=>{
       const user =  await fbService.signIn(credentials);
-      console.log(user);
+      context.dispatch({type:'SET_USER',payload:{user}});
+      localStorage.setItem("user",JSON.stringify(user));
+      history.push('/profile');
     }
 
     return (
@@ -43,6 +50,7 @@ const SignIn = () => {
                     value = {credentials.password}
                     onChange ={(e)=>changeHandler("password",e.target.value)}
                     placeholder = "Password"
+                    type = "password"
                     className = "app-signIn__input"
                 />
                 <Button onClick = {handleSignin}>Submit</Button>
