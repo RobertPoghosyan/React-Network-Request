@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import "./Input.scss";
 
 const Input = ({
+    name = "",
     type = "",
     value,
     onChange,
@@ -13,6 +14,7 @@ const Input = ({
 }) => {
     return (
         <input
+            name = {name}
             type = {type}
             value = {value}
             onChange = {onChange}
@@ -24,6 +26,7 @@ const Input = ({
 }
 
 Input.propTypes = {
+    type:PropTypes.string,
     type:PropTypes.string,
     value:PropTypes.string.isRequired,
     onChange:PropTypes.func.isRequired,
