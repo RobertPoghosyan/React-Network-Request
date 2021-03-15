@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 
+import { AppContext } from "context/AppContext";
 import Post from "components/Post/Post";
+import PostModal from 'components/PostModal/PostModal';
 import service from "api/service";
 import fbService from "api/fbService";
+import {actionTypes} from "context/actionTypes";
 
 import load from "assets/load.gif";
 import noResults from "assets/noResults.jpg";
@@ -15,32 +18,29 @@ export class Posts extends Component {
 
   
   state = {
-    posts:null,
+    //posts:null,
     start:0,
     hasMore:true,
     loading:false,
+    isCreateModalOpen:false,
+    titleValue:"",
+    bodyValue:""
   }
+
+  static contextType = AppContext;
 
   componentDidMount() {
     
-    // service.getAllPosts()
-    //     .then(resJson => {
-    //         this.setState({
-    //           posts:resJson,
-                
-    //         })
-    //     })
-    //   .catch(err =>{
-    //     console.log(err);
-    //   })
+    if(!this.context.state.posts){
 
-    fbService.getPosts()
-    .then(data => {
-      this.setState({
-       posts:data,
-                  
+      fbService.getPosts()
+      .then(data => {
+        this.context.dispatch({
+         type:actionTypes.SET_POSTS, payload:{posts:data}
+                    
+        })
       })
-    })
+    }
   }
   
 
@@ -63,16 +63,19 @@ export class Posts extends Component {
   }
 
   createPost = ()=>{
-    fbService.createPost({
-      title:'Created new Title',
-      body:'Created new Body',
+    const newPost = {
+      title:this.state.titleValue,
+      body:this.state.bodyValue,
       userId:1
-    })
+    }
+    fbService.createPost(newPost)
 
     .then(resJson =>{
-      this.setState ({
-        posts: [...this.state.posts,resJson]
+      this.context.dispatch({
+        type:actionTypes.CREATE_POST,
+        payload:{ post:resJson }
       })
+      this.toggleCreateModal();
 
     })
 
@@ -121,18 +124,28 @@ export class Posts extends Component {
     })
     fbService.getPosts(newStart,newStart + limit)
       .then(resJson => {
+        this.context.dispatch({type:actionTypes.GET_MORE_POSTS,payload:{posts:resJson}})
         this.setState({
-          posts:[...this.state.posts,...resJson],
           hasMore: resJson.length <limit ? false : true,
           loading:false,
         })
       })
   }
 
-  
+  toggleCreateModal = ()=>{
+    this.setState(prev =>({ isCreateModalOpen : !prev.isCreateModalOpen}))
+  }
+
+  changeValue = (e)=>{
+    const {name,value} = e.target;
+    this.setState({
+        [name]:value
+    })
+}
 
   render() {
-    const {hasMore,loading,posts} = this.state;
+    const {hasMore,loading,isCreateModalOpen,titleValue,bodyValue} = this.state;
+    const {state:{posts}} = this.context;
 
     if(!posts){
       return <div><img src ={load}></img></div>
@@ -160,9 +173,20 @@ export class Posts extends Component {
         </div>
         {hasMore && <div>{loading ? <img src ={load}></img>: <button onClick = {this.getMore} className = "app-posts__btn-getMore">GET MORE</button>}</div>}
 
-        <button onClick={this.createPost} className = "app-posts__btn__create"> Create Post </button>
+        <button onClick={this.toggleCreateModal} className = "app-posts__btn__create"> Create Post </button>
         {/* <button onClick={this.updatePost} className = "app-posts__btn__update"> Update Post </button>
         <button onClick={()=>this.deletePost(5)} className = "app-posts__btn__delete"> Delete Post </button> */}
+        <PostModal
+          action = {this.createPost}
+          bodyValue = {bodyValue}
+          titleValue = {titleValue}
+          changeValue = {this.changeValue}
+          isOpen = {isCreateModalOpen}
+          onClose = {this.toggleCreateModal}
+          buttonTitle = "Create"
+
+        />
+
       </div>
     )
   }
@@ -172,3 +196,14 @@ export default Posts;
 
 
 // {hasMore && <button onClick = {this.getMore} className = "app-posts__btn-getMore" disabled ={loading}>{loading ? "Loading" : "GET MORE"}</button>}
+
+// service.getAllPosts()
+    //     .then(resJson => {
+    //         this.setState({
+    //           posts:resJson,
+                
+    //         })
+    //     })
+    //   .catch(err =>{
+    //     console.log(err);
+    //   })

@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 
 import fbService from 'api/fbService';
 import { AppContext } from 'context/AppContext';
-import actionTypes from 'context/actionTypes';
+import {actionTypes} from 'context/actionTypes';
 import { useHistory } from 'react-router-dom';
 
 import './Profile.scss';
