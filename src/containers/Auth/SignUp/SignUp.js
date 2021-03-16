@@ -1,4 +1,5 @@
 import React,{useState , useContext} from 'react';
+import {useHistory} from 'react-router-dom';
 //import { toast } from 'react-toastify';
 
 import { AppContext } from 'context/AppContext';
@@ -15,11 +16,13 @@ const SignUp = () => {
     // const[email,setEmail]  = useState("");
     // const[password,setPassword]  = useState("");
 
-    const context = useContext(AppContext)
+    const context = useContext(AppContext);
+    const history = useHistory();
 
     const [loading,setLoading] = useState(false);
 
     const [credentials,setCredentials] = useState({
+        name:"",
         email:"",
         password:"",
     })
@@ -29,7 +32,7 @@ const SignUp = () => {
         passwordError: ""
     })
 
-    const changeHandler = (name,value)=>{
+    const changeHandler = (e) => {
         
         setErrorstate({
             emailError:"",
@@ -38,7 +41,7 @@ const SignUp = () => {
 
         setCredentials({
             ...credentials,
-            [name]:value,
+            [e.target.name]:e.target.value,
         })
     }
 
@@ -47,6 +50,9 @@ const SignUp = () => {
             setLoading(true);
             const user =  await fbService.signUp(credentials);
             context.dispatch({type:'SET_USER',payload:{user}});
+            localStorage.setItem("user",JSON.stringify(user));
+            history.push('/profile');
+            
         }catch(err){
             setErrorstate(
                 (validateMail(credentials.email) === false ) ? {emailError:"The email address is not valid" }: 
@@ -68,8 +74,17 @@ const SignUp = () => {
             <div className = "app-signUp__form">
                 <h1>CREATE ACCOUNT</h1>
                 <Input
+                    name = "name"
+                    value = {credentials.name}
+                    onChange ={changeHandler}
+                    placeholder = "Name"
+                    className = "app-signUp__input"
+                    loading = {loading}
+                />
+                <Input
+                    name = "email"
                     value = {credentials.email}
-                    onChange ={(e)=>changeHandler("email",e.target.value)}
+                    onChange ={changeHandler}
                     placeholder = "Email Address"
                     className = "app-signUp__input"
                     loading = {loading}
@@ -77,9 +92,11 @@ const SignUp = () => {
                 
                 <ErrorMessage text = {errorState.emailError} /> 
                 <Input
+                    name = "password"
                     value = {credentials.password}
-                    onChange ={(e)=>changeHandler("password",e.target.value)}
+                    onChange ={changeHandler}
                     placeholder = "Password"
+                    type = "password"
                     className = "app-signUp__input"
                     loading = {loading}
                 />
