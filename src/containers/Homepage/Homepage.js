@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 
 //import postsMockup from 'api/data-mockup';
 //import "./Homepage.scss"
@@ -8,13 +9,26 @@ export class Homepage extends Component {
     render() {
         return (
             <div>
-                Homepage
+                <button onClick = {this.props.incrementCount}>Increment</button>
+                <span>{this.props.count}</span>
+                <button onClick = {this.props.decrementCount}>Decrement</button>
             </div>
         )
     }
 }
 
-export default Homepage;
+const mapStateToProps = (state)=>{
+    return {
+        count:state.count
+    }
+}
+
+const mapDispatchToProps = {
+    incrementCount:()=>({type:'INCREMENT_COUNT'}),
+    decrementCount:()=>({type:'DECREMENT_COUNT'})
+}
+
+export default connect (mapStateToProps,mapDispatchToProps)(Homepage);
 
 // PUT data to firebase
 

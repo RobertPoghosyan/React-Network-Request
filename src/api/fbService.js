@@ -27,6 +27,7 @@ class FbService {
         .endAt(endAt.toString())
         .get()
         const data = res.toJSON();
+        console.log('res: ' + res);
         return Object.values(data);
     }
 
