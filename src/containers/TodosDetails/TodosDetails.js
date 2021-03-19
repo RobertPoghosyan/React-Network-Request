@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 
-
 import { AppContext } from 'context/AppContext';
-import Post from 'components/Post/Post';
+import Todo from 'components/Todo/Todo';
 import PostModal from 'components/PostModal/PostModal';
 import fbService from 'api/fbService';
-//import service from 'api/service';
-
-import "./PostDetails.scss";
-
-import load from "assets/load.gif";
 import { actionTypes } from 'context/actionTypes';
 
-export class PostDetails extends Component {
+import "./TodosDetails.scss";
+
+import load from "assets/load.gif";
+
+export class TodosDetails extends Component {
 
     state = {
         post:null,
@@ -24,7 +22,7 @@ export class PostDetails extends Component {
     static contextType = AppContext;
 
     componentDidMount (){
-        fbService.postsService.getPost(this.props.match.params.postId)
+        fbService.todoService.getPost(this.props.match.params.todoId)
         .then(resJson => {
             this.setState({
               post: resJson,
@@ -45,7 +43,7 @@ export class PostDetails extends Component {
     }
 
     savePost = ()=>{
-        fbService.postsService.updatePost({
+        fbService.todoService.updatePost({
             ...this.state.post,
             title:this.state.titleValue,
             body:this.state.bodyValue
@@ -75,18 +73,6 @@ export class PostDetails extends Component {
         })
     }
 
-    // changeTitle = (e)=>{
-    //     this.setState({
-    //         titleValue:e.target.value
-    //     })
-    // }
-
-    // changeBody = (e)=>{
-    //     this.setState({
-    //         bodyValue:e.target.value
-    //     })
-    // }
-
     render() {
         const {post,isEditModalOpen,titleValue,bodyValue} = this.state;
         if(!post){
@@ -94,7 +80,7 @@ export class PostDetails extends Component {
         }
         return (
             <div className = "app-postDetails">
-                <Post
+                <Todo
                     post = {post}
                     edit = {this.toggleCloseModal}
                 />
@@ -114,4 +100,4 @@ export class PostDetails extends Component {
     }
 }
 
-export default PostDetails;
+export default TodosDetails;

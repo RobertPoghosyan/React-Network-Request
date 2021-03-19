@@ -1,16 +1,3 @@
-import userService  from "./userService";
-import postsService from "./postsServise";
-import todoService  from "./todoService";
-
-const fbService = {
-    userService,
-    postsService,
-    todoService
-}
-
-export default fbService;
-
-/*
 import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
@@ -19,7 +6,7 @@ import firebaseConfig from "./firebaseConfig";
 
 
 
-class FbService {
+class TodoService {
     constructor (){
         if(firebase.apps.length === 0){
             firebase.initializeApp(firebaseConfig);
@@ -27,14 +14,14 @@ class FbService {
     }
 
     getAllPosts = async () => {
-       const res = await firebase.database().ref("posts").get();
+       const res = await firebase.database().ref("todos").get();
        const data = res.toJSON();
        return Object.values(data);
     }
 
     getPosts = async (startAt = 0 ,endAt = 8)=>{
         const res = await firebase.database()
-        .ref("posts")
+        .ref("todos")
         .orderByKey()
         .startAt(startAt.toString())
         .endAt(endAt.toString())
@@ -45,7 +32,7 @@ class FbService {
     }
 
     updatePost = async (postData) =>{
-        const postRef = firebase.database().ref(`posts/${postData.id}`);
+        const postRef = firebase.database().ref(`todos/${postData.id}`);
         await postRef.update(postData)
         const res = await postRef.get();
         return res.val();
@@ -53,14 +40,14 @@ class FbService {
 
     getPost = async(id) =>{
        const res = await firebase.database()
-       .ref(`posts/${id}`)
+       .ref(`todos/${id}`)
        .get()
        return res.val();
     }
 
     createPost = async(postData) => {
         const res = await firebase.database()
-        .ref("posts")
+        .ref("todos")
         .orderByKey()
         .limitToLast(1)
         .get();
@@ -74,7 +61,7 @@ class FbService {
       
 
         await firebase.database()
-       .ref(`posts/${id+1}`)
+       .ref(`todos/${id+1}`)
        .set(newItem)
 
        return newItem;
@@ -82,11 +69,11 @@ class FbService {
     }
 
     removePost = async (id) =>{
-        const postRef = firebase.database().ref(`posts/${id}`);
+        const postRef = firebase.database().ref(`todos/${id}`);
         await postRef.remove()
 
         const posts = await this.getAllPosts()
-        await firebase.database().ref("posts")
+        await firebase.database().ref("todos")
         .set(posts.map((el,idx)=>{
             return {
                 ...el,
@@ -95,31 +82,10 @@ class FbService {
         }))
     }
 
-    signIn = async (credentials)=>{
-      const res = await firebase.auth().signInWithEmailAndPassword(credentials.email,credentials.password);
-      const{uid,displayName,photURL,email} = res.user;
-
-      return {uid,displayName,photURL,email};
-    }
-
-    signUp = async (credentials)=>{
-     const res =  await  firebase.auth().createUserWithEmailAndPassword(credentials.email,credentials.password);
-     const{uid,displayName,photURL,email} = res.user;
-     const user = firebase.auth().currentUser;
-     await user.updateProfile({
-         displayName:credentials.name
-     })
-
-      return {uid,displayName,photURL,email};
-    }
-
-    logout = async () =>{
-        await firebase.auth().signOut();
-    }
+    
 }
 
-const fbService = new FbService();
-export default fbService;
+const todoService = new TodoService();
+export default todoService;
 
 
-*/
