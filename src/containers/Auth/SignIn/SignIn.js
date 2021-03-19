@@ -28,7 +28,7 @@ const SignIn = () => {
     }
 
     const handleSignin = async ()=>{
-      const user =  await fbService.signIn(credentials);
+      const user =  await fbService.userService.signIn(credentials);
       context.dispatch({type:'SET_USER',payload:{user}});
       localStorage.setItem("user",JSON.stringify(user));
       history.push('/profile');

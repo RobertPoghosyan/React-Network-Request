@@ -1,24 +1,12 @@
-import {createStore} from 'redux';
 import { reduxActionTypes } from './reduxActionTypes';
 
 const initialState = {
     count:0,
     posts:null,
     hasMore:true,
-  }
-  
-  const reducer = (state = initialState,action)=>{
+}
+const postReducer = (state = initialState,action)=>{
     switch(action.type){
-        case reduxActionTypes.INCREMENT_COUNT:
-            return {
-                ...state,
-                count:state.count+1
-            }
-        case reduxActionTypes.DECREMENT_COUNT:
-                return {
-                ...state,
-                count:state.count-1
-            }
         case reduxActionTypes.SET_POSTS:
             return {
                 ...state,
@@ -37,6 +25,6 @@ const initialState = {
         default:
         return state;  
     }
-  }
-  
-  export const store = createStore(reducer);
+}
+
+export default postReducer;

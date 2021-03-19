@@ -1,14 +1,3 @@
-import userService from "./userService";
-import postsService from "./postsServise";
-
-const fbService = {
-    userService,
-    postsService,
-}
-
-export default fbService;
-
-/*
 import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
@@ -17,7 +6,7 @@ import firebaseConfig from "./firebaseConfig";
 
 
 
-class FbService {
+class PostsService {
     constructor (){
         if(firebase.apps.length === 0){
             firebase.initializeApp(firebaseConfig);
@@ -93,31 +82,10 @@ class FbService {
         }))
     }
 
-    signIn = async (credentials)=>{
-      const res = await firebase.auth().signInWithEmailAndPassword(credentials.email,credentials.password);
-      const{uid,displayName,photURL,email} = res.user;
-
-      return {uid,displayName,photURL,email};
-    }
-
-    signUp = async (credentials)=>{
-     const res =  await  firebase.auth().createUserWithEmailAndPassword(credentials.email,credentials.password);
-     const{uid,displayName,photURL,email} = res.user;
-     const user = firebase.auth().currentUser;
-     await user.updateProfile({
-         displayName:credentials.name
-     })
-
-      return {uid,displayName,photURL,email};
-    }
-
-    logout = async () =>{
-        await firebase.auth().signOut();
-    }
+    
 }
 
-const fbService = new FbService();
-export default fbService;
+const postsService = new PostsService();
+export default postsService;
 
 
-*/

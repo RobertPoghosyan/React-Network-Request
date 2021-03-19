@@ -12,7 +12,7 @@ const Profile = () => {
     const context = useContext(AppContext)
 
     const logoutHandler = async ()=>{
-       await fbService.logout()
+       await fbService.userService.logout()
        localStorage.removeItem('user')
        context.dispatch({type:actionTypes.REMOVE_USER})
        history.push("/auth")

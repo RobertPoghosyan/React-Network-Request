@@ -6,13 +6,14 @@ import Post from "components/Post/Post";
 import PostModal from 'components/PostModal/PostModal';
 import service from "api/service";
 import fbService from "api/fbService";
-import {actionTypes} from "context/actionTypes";
+//import {actionTypes} from "context/actionTypes";
+import {setReduxPosts,getMoreReduxPosts,hasMoreReduxPosts} from "actions/postActions";
 
 import load from "assets/load.gif";
 import noResults from "assets/noResults.jpg";
 
 import './Posts.scss';
-import { reduxActionTypes } from "reducers/reduxActionTypes";
+
 
 const limit = 8;
 
@@ -35,7 +36,7 @@ export class Posts extends Component {
     
     if(!this.props.posts){
 
-      fbService.getPosts()
+      fbService.postsService.getPosts()
       .then(data => {
        // this.context.dispatch({ type:actionTypes.SET_POSTS, payload:{posts:data} })
        this.props.setReduxPosts(data);
@@ -70,7 +71,7 @@ export class Posts extends Component {
       body:this.state.bodyValue,
       userId:1
     }
-    fbService.createPost(newPost)
+    fbService.postsService.createPost(newPost)
 
     .then(resJson =>{
       
@@ -99,9 +100,9 @@ export class Posts extends Component {
 
   removePost = (id)=>{
     const {start} = this.state
-    fbService.removePost(id)
+    fbService.postsService.removePost(id)
     .then(() => {
-      fbService.getPosts(0,start !==0 ? start +limit : limit)
+      fbService.postsService.getPosts(0,start !==0 ? start +limit : limit)
       .then(res=>{
         this.props.setReduxPosts(res);
       })
@@ -138,7 +139,7 @@ export class Posts extends Component {
       start:newStart,
       loading:true
     })
-    fbService.getPosts(newStart,newStart + limit)
+    fbService.postsService.getPosts(newStart,newStart + limit)
       .then(resJson => {
         //this.context.dispatch({type:actionTypes.GET_MORE_POSTS,payload:{posts:resJson}})
         this.props.hasMoreReduxPosts(resJson.length <limit ? false : true)
@@ -213,30 +214,15 @@ export class Posts extends Component {
 
 const mapStateToProps = (state)=>{
   return {
-    posts:state.posts,
-    hasMore:state.hasMore
+    posts:state.postsData.posts,
+    hasMore:state.postsData.hasMore
   }
 }
 
 const mapDispatchToProps ={
-  setReduxPosts:(posts)=>({
-    type:reduxActionTypes.SET_POSTS,
-    payload:{
-      posts,
-    }
-  }),
-  getMoreReduxPosts:(posts)=>({
-    type:reduxActionTypes.GET_MORE_POSTS,
-    payload:{
-      posts,
-    }
-  }),
-  hasMoreReduxPosts:(hasMore)=>({
-    type:reduxActionTypes.HAS_MORE_POSTS,
-    payload:{
-      hasMore,
-    }
-  })
+  setReduxPosts,
+  getMoreReduxPosts,
+  hasMoreReduxPosts
 }
 
 export default connect(mapStateToProps,mapDispatchToProps) (Posts);
