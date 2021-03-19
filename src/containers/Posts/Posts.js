@@ -36,7 +36,7 @@ export class Posts extends Component {
     
     if(!this.props.posts){
 
-      fbService.getPosts()
+      fbService.postsService.getPosts()
       .then(data => {
        // this.context.dispatch({ type:actionTypes.SET_POSTS, payload:{posts:data} })
        this.props.setReduxPosts(data);
@@ -71,7 +71,7 @@ export class Posts extends Component {
       body:this.state.bodyValue,
       userId:1
     }
-    fbService.createPost(newPost)
+    fbService.postsService.createPost(newPost)
 
     .then(resJson =>{
       
@@ -100,9 +100,9 @@ export class Posts extends Component {
 
   removePost = (id)=>{
     const {start} = this.state
-    fbService.removePost(id)
+    fbService.postsService.removePost(id)
     .then(() => {
-      fbService.getPosts(0,start !==0 ? start +limit : limit)
+      fbService.postsService.getPosts(0,start !==0 ? start +limit : limit)
       .then(res=>{
         this.props.setReduxPosts(res);
       })
@@ -139,7 +139,7 @@ export class Posts extends Component {
       start:newStart,
       loading:true
     })
-    fbService.getPosts(newStart,newStart + limit)
+    fbService.postsService.getPosts(newStart,newStart + limit)
       .then(resJson => {
         //this.context.dispatch({type:actionTypes.GET_MORE_POSTS,payload:{posts:resJson}})
         this.props.hasMoreReduxPosts(resJson.length <limit ? false : true)

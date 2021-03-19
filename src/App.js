@@ -7,7 +7,7 @@ import AppContextProvider from "context/AppContextProvider";
 import AppRoutes from "routes/AppRoutes";
 import Header from "components/Header/Header";
 import Layout from "components/Layout/Layout";
-import {store} from "reducers/store";
+import {store} from "reducers";
 
 import 'react-toastify/dist/ReactToastify.css';
 
