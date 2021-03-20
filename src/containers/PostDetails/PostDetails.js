@@ -24,7 +24,7 @@ export class PostDetails extends Component {
     static contextType = AppContext;
 
     componentDidMount (){
-        fbService.getPost(this.props.match.params.postId)
+        fbService.postsService.getPost(this.props.match.params.postId)
         .then(resJson => {
             this.setState({
               post: resJson,
@@ -45,7 +45,7 @@ export class PostDetails extends Component {
     }
 
     savePost = ()=>{
-        fbService.updatePost({
+        fbService.postsService.updatePost({
             ...this.state.post,
             title:this.state.titleValue,
             body:this.state.bodyValue
